@@ -26,5 +26,15 @@
     "32": "assets/icons/inactive-32x32.png",
     "48": "assets/icons/inactive-48x48.png",
     "128": "assets/icons/inactive-128x128.png"
-  }
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://trello.com/*"],
+      "js": ["providers/trello.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }
