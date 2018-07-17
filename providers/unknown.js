@@ -2,7 +2,8 @@
 function unknownProvider(tab) {
     return {
         id: null,
-        title: tab.title,
-        url: tab.url
+        description: tab.title,
+        url: tab.url,
+        external_ids: null,
     };
 }

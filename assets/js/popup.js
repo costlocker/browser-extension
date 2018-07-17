@@ -34,7 +34,5 @@ function loadTimeentryFromPage(data, tab) {
     if (!data) {
         data = unknownProvider(tab);
     }
-    document.getElementById('app-id').textContent  = data.id;
-    document.getElementById('app-title').textContent = data.title;
-    document.getElementById('app-url').textContent = data.url;
+    document.getElementById('app-debug').textContent = JSON.stringify(data, null, 2);
 }
