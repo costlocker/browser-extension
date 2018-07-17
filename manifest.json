@@ -31,10 +31,7 @@
     "activeTab"
   ],
   "content_scripts": [
-    {
-      "matches": ["https://trello.com/*"],
-      "js": ["providers/trello.js"],
-      "run_at": "document_idle"
-    }
+    { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },
+    { "matches": ["https://calendar.google.com/*"], "js": ["providers/google-calendar.js"], "run_at": "document_idle" }
   ]
 }
