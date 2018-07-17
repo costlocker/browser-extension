@@ -4,8 +4,9 @@ chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
         callback({
             id: null,
             description: getEventTitle(),
-            url: window.location.href,
-            external_ids: null
+            external_ids: {
+                url: window.location.href,
+            }
         });
     }
 

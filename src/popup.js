@@ -32,7 +32,7 @@ function loadDataFromCurrentPage() {
 
 function loadTimeentryFromPage(data, tab) {
     if (!data) {
-        data = unknownProvider(tab);
+        data = anyPageProvider(tab);
     }
     document.getElementById('app-debug').textContent = JSON.stringify(data, null, 2);
 }

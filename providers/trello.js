@@ -3,10 +3,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
     if (msg.from === 'popup' && msg.subject === 'CostlockerTimeEntry') {
         const page = parseUrl();
         callback({
-            id: '#' + page.shortId,
+            id: page.shortId,
             description: getCardTitle(),
-            url: page.url,
             external_ids: {
+                url: page.url,
                 cardShortId: page.shortId,
                 boardShortLink: getBoardShortLink(),
             }
