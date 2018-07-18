@@ -3,15 +3,6 @@ let trackingButton = document.getElementById('tracking-button');
 trackingButton.onclick = function () {
     isTrackingRunning = !isTrackingRunning;
     chrome.browserAction.setIcon(getIcons(isTrackingRunning));
-    sendApiCall(
-        {
-            method: 'GET',
-            path: '/api/running-entry',
-        },
-        function (data) {
-            document.getElementById('api-debug').textContent = JSON.stringify(data, null, 2);
-        }
-    );
 };
 
 function sendApiCall(settings, callback) {
@@ -23,7 +14,7 @@ function sendApiCall(settings, callback) {
         function (data) {
             if (data.status == 200) {
                 showPage('page-tracking');
-                callback(data);
+                callback(data.json);
             } else if (data.status == 401) {
                 showPage('page-login');
             } else {
@@ -35,7 +26,7 @@ function sendApiCall(settings, callback) {
 }
 
 function showPage(selectedPage) {
-    ['page-tracking', 'page-error', 'page-login'].forEach(page => {
+    ['page-loading', 'page-tracking', 'page-error', 'page-login'].forEach(page => {
         document.getElementById(page).className = page == selectedPage ? '' : 'hide';
     });
 }
@@ -47,7 +38,22 @@ function getIcons (isTrackingRunning) {
     };
 }
 
-window.addEventListener('DOMContentLoaded', loadDataFromCurrentPage);
+window.addEventListener('DOMContentLoaded', loadTracking);
+
+function loadTracking () {
+    showPage('page-loading');
+    sendApiCall(
+        {
+            method: 'GET',
+            path: '/api/running-entry',
+        },
+        function (data) {
+            isTrackingRunning = data.uuid !== null;
+            showPage('page-tracking');
+        }
+    );
+    loadDataFromCurrentPage();
+}
 
 function loadDataFromCurrentPage() {
     chrome.tabs.query(
@@ -85,7 +91,6 @@ function loadTimeentryFromPage(data, tab) {
             document.getElementById('description').value = description;
         }
     );
-    document.getElementById('app-debug').textContent = JSON.stringify(data, null, 2);
 }
 
 document.querySelectorAll('.open-costlocker').forEach(

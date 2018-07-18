@@ -3,11 +3,23 @@
         <title>Costlocker Tracking Button</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="../assets/css/popup.css" />
+        <link rel="stylesheet" href="../assets/css/loading.css" />
     </head>
     <body>
-        <h1>Costlocker</h1>
 
-        <div id="page-tracking">
+        <div id="page-loading">
+            <div class="cl-loading cl-loading--show">
+                <span class="cl-loading__logos">
+                    <span class="cl-loading__logo cl-loading__logo--one"></span>
+                    <span class="cl-loading__logo cl-loading__logo--two"></span>
+                    <span class="cl-loading__logo cl-loading__logo--three"></span>
+                    <span class="cl-loading__logo cl-loading__logo--four"></span>
+                </span>
+            </div>
+        </div>
+
+        <div id="page-tracking" class="hide">
+            <h1>Costlocker</h1>
             <input type="text" maxlength="255" id="description" />
             <button id="tracking-button">Start Tracking</button>
         </div>
@@ -23,10 +35,6 @@
                 <button id="login" class="btn btn-primary open-costlocker">Log In</button>
             </div>
         </div>
-
-        <hr />
-        <pre id="api-debug"></pre>
-        <pre id="app-debug"></pre>
 
         <div class="controls">
             <button id="costlocker" class="open-costlocker">
