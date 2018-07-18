@@ -30,7 +30,8 @@ function processApiCall(settings, callback) {
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    credentials: 'include'    
+                    credentials: 'include',
+                    body: settings.data ? JSON.stringify(settings.data) : undefined,
                 }
             };
             fetch(call.url, call.settings)

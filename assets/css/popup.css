@@ -22,7 +22,12 @@ input[type="text"], button, #page-error {
     color: red;
 }
 #error-message {
-    color: orange;
+    color: gray;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 #page-loading {

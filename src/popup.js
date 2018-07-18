@@ -1,9 +1,3 @@
-let isTrackingRunning = false;
-let trackingButton = document.getElementById('tracking-button');
-trackingButton.onclick = function () {
-    isTrackingRunning = !isTrackingRunning;
-    chrome.browserAction.setIcon(getIcons(isTrackingRunning));
-};
 
 function sendApiCall(settings, callback) {
     chrome.runtime.sendMessage(
@@ -19,7 +13,7 @@ function sendApiCall(settings, callback) {
                 showPage('page-login');
             } else {
                 showPage('page-error');
-                document.getElementById('error-message').textContent = data.json.message || '';
+                document.getElementById('error-message').textContent = JSON.stringify(data.json, null, 2);
             }
         }
     );
@@ -31,12 +25,53 @@ function showPage(selectedPage) {
     });
 }
 
-function getIcons (isTrackingRunning) {
-    const status = isTrackingRunning ? 'active' : 'inactive';
-    return {
-        path: `../assets/icons/${status}-48x48.png`
-    };
+let runningEntry = null;
+let externalIds = null;
+let trackingButton = document.getElementById('tracking-button');
+
+function isRunning() {
+    return runningEntry && runningEntry.uuid;
 }
+
+function reloadIcon() {
+    const status = isRunning() ? 'active' : 'inactive';
+    chrome.browserAction.setIcon({
+        path: `../assets/icons/${status}-48x48.png`
+    });
+}
+
+trackingButton.onclick = function () {
+    const entries = [];
+    if (isRunning()) {
+        entries.push({
+            uuid: runningEntry.uuid,
+            date: runningEntry.dt,
+            duration: dayjs().diff(dayjs(runningEntry.dt), 'seconds'),
+            debug: runningEntry
+        });
+    }
+    entries.push({
+        date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        duration: null,
+        description: document.getElementById('description').value,
+        assignment: null,
+        external_ids: externalIds
+    });
+    sendApiCall(
+        {
+            method: 'POST',
+            path: '/api-public/v2/timeentries/',
+            data: {
+                data: entries
+            }
+        },
+        function (data) {
+            runningEntry = data.data[entries.length - 1];
+            reloadIcon();
+            window.close();
+        }
+    );
+};
 
 window.addEventListener('DOMContentLoaded', loadTracking);
 
@@ -48,7 +83,8 @@ function loadTracking () {
             path: '/api/running-entry',
         },
         function (data) {
-            isTrackingRunning = data.uuid !== null;
+            runningEntry = data;
+            reloadIcon();
             showPage('page-tracking');
         }
     );
@@ -75,6 +111,7 @@ function loadTimeentryFromPage(data, tab) {
     if (!data) {
         data = anyPageProvider(tab);
     }
+    externalIds = data.external_ids;
     chrome.storage.local.get(
         {
             idBeforeDescription: true,
