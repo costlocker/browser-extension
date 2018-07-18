@@ -16,11 +16,6 @@
     "page": "src/options.html",
     "open_in_tab": false
   },
-  "background": {
-    "scripts": [
-      "src/context-menu.js"
-    ]
-  },
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
@@ -38,7 +33,6 @@
   },
   "permissions": [
     "activeTab",
-    "contextMenus",
     "storage"
   ],
   "content_scripts": [
