@@ -8,7 +8,7 @@ trackingButton.onclick = function () {
 function getIcons (isTrackingRunning) {
     const status = isTrackingRunning ? 'active' : 'inactive';
     return {
-        path: `assets/icons/${status}-48x48.png`
+        path: `../assets/icons/${status}-48x48.png`
     };
 }
 
