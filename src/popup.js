@@ -51,6 +51,11 @@ document.getElementById('tracking-stop').onclick = function () {
                 date: runningEntry.dt,
                 description: document.getElementById('description-running').value,
                 duration: dayjs().diff(dayjs(runningEntry.dt), 'seconds'),
+                assignment: {
+                    project_id: runningEntry.project_id,
+                    activity_id: runningEntry.activity_id,
+                    task_id: runningEntry.task_id,
+                }
             }
         },
         function (data) {
@@ -70,7 +75,7 @@ document.getElementById('tracking-start').onclick = function () {
                 date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
                 duration: null,
                 description: document.getElementById('description-start').value,
-                assignment: null,
+                assignment: getSelectedAssignment(),
                 external_ids: externalIds
             }
         },
@@ -82,18 +87,26 @@ document.getElementById('tracking-start').onclick = function () {
     );
 };
 
-window.addEventListener('DOMContentLoaded', loadTracking);
+window.addEventListener('DOMContentLoaded', showPopup);
 
-function loadTracking () {
+function showPopup () {
     showPage('page-loading');
     sendApiCall(
         {
-            method: 'GET',
-            path: '/api/running-entry',
+            method: 'POST',
+            path: '/api',
+            data: {
+                Resource_Tracking_RunningEntry: {
+                },
+                Resource_Tracking_AvailableAssignments: {
+                    tracking: true
+                }
+            }
         },
         function (data) {
-            runningEntry = data;
+            runningEntry = data.Resource_Tracking_RunningEntry;
             reloadIcon();
+            loadAssignments(data.Resource_Tracking_AvailableAssignments);
             if (isRunning()) {
                 document.getElementById('description-running').value = runningEntry.name;
                 showPage('page-tracking-stop');
@@ -103,6 +116,32 @@ function loadTracking () {
         }
     );
     loadDataFromCurrentPage();
+}
+
+function loadAssignments(availableAssignments) {
+    var projectsSelect = document.getElementById('project-start');
+    projectsSelect.innerHTML = '';
+    projectsSelect.options[0] = new Option('[No project]', '', true);
+    availableAssignments.Items.forEach((item, index) => {
+        const project = availableAssignments.MapProject[item.project_id].name;
+        const option = new Option(
+            `${project} ${item.task_name || ''}`,
+            item.project_id
+        );
+        option.setAttribute('data-activity', item.activity_id || '');
+        option.setAttribute('data-task', item.task_id || '');
+        projectsSelect.options[index + 1] = option;
+    });
+}
+
+function getSelectedAssignment() {
+    const projectsSelect = document.getElementById('project-start');
+    const selectedProject = projectsSelect[projectsSelect.selectedIndex || 0];
+    return {
+        project_id: selectedProject.value || null,
+        activity_id: selectedProject.getAttribute('data-activity') || null,
+        task_id: selectedProject.getAttribute('data-task') || null
+    };
 }
 
 function loadDataFromCurrentPage() {

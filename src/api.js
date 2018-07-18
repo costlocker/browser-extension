@@ -29,6 +29,7 @@ function processApiCall(settings, callback) {
                     method: settings.method,
                     headers: {
                       'Content-Type': 'application/json',
+                      'X-XSRF-TOKEN': cookie.value
                     },
                     credentials: 'include',
                     body: settings.data ? JSON.stringify(settings.data) : undefined,
