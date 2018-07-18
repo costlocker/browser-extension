@@ -16,6 +16,11 @@
     "page": "src/options.html",
     "open_in_tab": false
   },
+  "background": {
+    "scripts": [
+      "src/api.js"
+    ]
+  },
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
@@ -33,7 +38,9 @@
   },
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "cookies",
+    "http://costlocker.php7:8080/*"
   ],
   "content_scripts": [
     { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },

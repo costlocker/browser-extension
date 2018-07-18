@@ -3,6 +3,16 @@ let trackingButton = document.getElementById('tracking-button');
 trackingButton.onclick = function () {
     isTrackingRunning = !isTrackingRunning;
     chrome.browserAction.setIcon(getIcons(isTrackingRunning));
+    chrome.runtime.sendMessage(
+        {
+            type: 'api',
+            method: 'GET',
+            path: '/api/running-entry',
+        },
+        function (data) {
+            document.getElementById('api-debug').textContent = JSON.stringify(data, null, 2);
+        }
+    );
 };
 
 function getIcons (isTrackingRunning) {
