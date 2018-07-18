@@ -7,7 +7,6 @@ function sendApiCall(settings, callback) {
         },
         function (data) {
             if (data.status == 200) {
-                showPage('page-tracking');
                 callback(data.json);
             } else if (data.status == 401) {
                 showPage('page-login');
@@ -20,7 +19,13 @@ function sendApiCall(settings, callback) {
 }
 
 function showPage(selectedPage) {
-    ['page-loading', 'page-tracking', 'page-error', 'page-login'].forEach(page => {
+    [
+        'page-loading',
+        'page-tracking-start',
+        'page-tracking-stop',
+        'page-error',
+        'page-login'
+    ].forEach(page => {
         document.getElementById(page).className = page == selectedPage ? '' : 'hide';
     });
 }
@@ -40,33 +45,41 @@ function reloadIcon() {
     });
 }
 
-trackingButton.onclick = function () {
-    const entries = [];
-    if (isRunning()) {
-        entries.push({
-            uuid: runningEntry.uuid,
-            date: runningEntry.dt,
-            duration: dayjs().diff(dayjs(runningEntry.dt), 'seconds'),
-            debug: runningEntry
-        });
-    }
-    entries.push({
-        date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-        duration: null,
-        description: document.getElementById('description').value,
-        assignment: null,
-        external_ids: externalIds
-    });
+document.getElementById('tracking-stop').onclick = function () {
     sendApiCall(
         {
             method: 'POST',
             path: '/api-public/v2/timeentries/',
             data: {
-                data: entries
+                uuid: runningEntry.uuid,
+                date: runningEntry.dt,
+                description: document.getElementById('description-running').value,
+                duration: dayjs().diff(dayjs(runningEntry.dt), 'seconds'),
             }
         },
         function (data) {
-            runningEntry = data.data[entries.length - 1];
+            runningEntry = null;
+            reloadIcon();
+            showPage('page-tracking-start');
+        }
+    );
+};
+
+document.getElementById('tracking-start').onclick = function () {
+    sendApiCall(
+        {
+            method: 'POST',
+            path: '/api-public/v2/timeentries/',
+            data: {
+                date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+                duration: null,
+                description: document.getElementById('description-start').value,
+                assignment: null,
+                external_ids: externalIds
+            }
+        },
+        function (data) {
+            runningEntry = data.data[data.data.length - 1];
             reloadIcon();
             window.close();
         }
@@ -85,7 +98,12 @@ function loadTracking () {
         function (data) {
             runningEntry = data;
             reloadIcon();
-            showPage('page-tracking');
+            if (isRunning()) {
+                document.getElementById('description-running').value = runningEntry.name;
+                showPage('page-tracking-stop');
+            } else {
+                showPage('page-tracking-start');
+            }
         }
     );
     loadDataFromCurrentPage();
@@ -125,7 +143,7 @@ function loadTimeentryFromPage(data, tab) {
                 const suffix = options.idSuffix ? options.idSuffix : '';
                 description = `${prefix}${data.id}${suffix} ${description}`;
             }
-            document.getElementById('description').value = description;
+            document.getElementById('description-start').value = description;
         }
     );
 }
