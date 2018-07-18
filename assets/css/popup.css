@@ -6,4 +6,12 @@ html, body {
 
 body {
     background: #f2f2f2;
+    padding: 1ex;
+}
+
+input[type="text"], button {
+    display: block;
+    padding: 3px;
+    margin-bottom: 1ex;
+    width: 100%;
 }

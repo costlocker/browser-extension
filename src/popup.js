@@ -34,5 +34,25 @@ function loadTimeentryFromPage(data, tab) {
     if (!data) {
         data = anyPageProvider(tab);
     }
+    chrome.storage.local.get(
+        {
+            idBeforeDescription: true,
+            idPrefix: '',
+            idSuffix: '',
+        },
+        function (options) {
+            let description = data.description;
+            if (data.id && options.idBeforeDescription) {
+                const prefix = options.idPrefix ? options.idPrefix : '';
+                const suffix = options.idSuffix ? options.idSuffix : '';
+                description = `${prefix}${data.id}${suffix} ${description}`;
+            }
+            document.getElementById('description').value = description;
+        }
+    );
     document.getElementById('app-debug').textContent = JSON.stringify(data, null, 2);
 }
+
+document.querySelector('#go-to-options').onclick = function() {
+    chrome.runtime.openOptionsPage();
+};

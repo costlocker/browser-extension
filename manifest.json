@@ -12,6 +12,10 @@
       "128": "assets/icons/inactive-128x128.png"
     }
   },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
@@ -28,7 +32,8 @@
     "128": "assets/icons/inactive-128x128.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "content_scripts": [
     { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },

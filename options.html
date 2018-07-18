@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Costlocker Tracking Button Settings</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="assets/css/popup.css" />
+        <link rel="stylesheet" href="assets/css/options.css" />
+    </head>
+    <body>
+        <h2>Time-entry description</h2>
+        <p>
+            Let's say you tracking on Trello card <em>Redesign homepage</em> with id 123.
+            You might define that you want to save tracking <em>#123 - Redesign homepage</em>.
+        </p>
+        <ul>
+            <li>
+                <label>
+                    <input type="checkbox" id="id_before_description" />
+                    Add ID before description text
+                </label>
+            </li>
+            <li>
+                <label>
+                    Text before ID<br />
+                    <input type="text" id="id_prefix" placeholder="#" />
+                </label>
+            </li>
+            <li>
+                <label>
+                    Text after ID<br />
+                    <input type="text" id="id_suffix" placeholder=" -" />
+                </label>
+            </li>
+        </ul>
+        <button id="save">Save</button>
+        <script src="src/options.js"></script>
+    </body>
+</html>
