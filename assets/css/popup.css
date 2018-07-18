@@ -9,9 +9,50 @@ body {
     padding: 1ex;
 }
 
-input[type="text"], button {
+input[type="text"], button, #page-error {
     display: block;
     padding: 3px;
     margin-bottom: 1ex;
     width: 100%;
+}
+
+#page-error {
+    background: red;
+    color: white;
+}
+
+.btn-primary {
+    background: blue;
+    color: white;
+}
+
+.hide {
+    display: none !important;
+}
+
+.controls {
+    padding-top: 1em;
+    font-size: 0.8;
+    text-align: center;
+    vertical-align: middle;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+.controls button {
+    display: inline-block;
+    margin: 1ex;
+    padding: 0;
+    width: auto;
+    background: transparent;
+    border: 0;
+    color: gray;
+    line-height: 20px;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+    opacity: 0.4;
+}
+.controls button:hover {
+    opacity: 1;
 }

@@ -3,9 +3,8 @@ let trackingButton = document.getElementById('tracking-button');
 trackingButton.onclick = function () {
     isTrackingRunning = !isTrackingRunning;
     chrome.browserAction.setIcon(getIcons(isTrackingRunning));
-    chrome.runtime.sendMessage(
+    sendApiCall(
         {
-            type: 'api',
             method: 'GET',
             path: '/api/running-entry',
         },
@@ -14,6 +13,32 @@ trackingButton.onclick = function () {
         }
     );
 };
+
+function sendApiCall(settings, callback) {
+    chrome.runtime.sendMessage(
+        {
+            type: 'api',
+            call: settings,
+        },
+        function (data) {
+            if (data.status == 200) {
+                showPage('page-tracking');
+                callback(data);
+            } else if (data.status == 401) {
+                showPage('page-login');
+            } else {
+                showPage('page-error');
+                document.getElementById('error-message').textContent = data.json.message || '';
+            }
+        }
+    );
+}
+
+function showPage(selectedPage) {
+    ['page-tracking', 'page-error', 'page-login'].forEach(page => {
+        document.getElementById(page).className = page == selectedPage ? '' : 'hide';
+    });
+}
 
 function getIcons (isTrackingRunning) {
     const status = isTrackingRunning ? 'active' : 'inactive';
@@ -63,6 +88,15 @@ function loadTimeentryFromPage(data, tab) {
     document.getElementById('app-debug').textContent = JSON.stringify(data, null, 2);
 }
 
-document.querySelector('#go-to-options').onclick = function() {
+document.querySelectorAll('.open-costlocker').forEach(
+    link => link.addEventListener('click', function() {
+        chrome.tabs.create({url: 'https://new.costlocker.com/'});
+        window.close();
+    }
+));
+document.querySelector('#close').addEventListener('click', function() {
+    window.close();
+});
+document.querySelector('#options').addEventListener('click', function() {
     chrome.runtime.openOptionsPage();
-};
+});
