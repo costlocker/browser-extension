@@ -119,28 +119,70 @@ function showPopup () {
 }
 
 function loadAssignments(availableAssignments) {
-    var projectsSelect = document.getElementById('project-start');
+    const projectsSelect = document.getElementById('project-start');
     projectsSelect.innerHTML = '';
     projectsSelect.options[0] = new Option('[No project]', '', true);
-    availableAssignments.Items.forEach((item, index) => {
+
+    groupAssignmentsByProject().forEach((item, index) => {
         const project = availableAssignments.MapProject[item.project_id].name;
-        const option = new Option(
-            `${project} ${item.task_name || ''}`,
-            item.project_id
-        );
-        option.setAttribute('data-activity', item.activity_id || '');
-        option.setAttribute('data-task', item.task_id || '');
+        const option = new Option(item.name, item.project_id);
+        option.setAttribute('data-items', JSON.stringify(item.items));
         projectsSelect.options[index + 1] = option;
     });
+    projectsSelect.addEventListener('change', reloadAssignmentsForSelectedProject);
+
+    function groupAssignmentsByProject() {
+        const projects = [];
+        const mapping = {};
+        availableAssignments.Items.forEach((item, index) => {
+            if (!mapping[item.project_id]) {
+                mapping[item.project_id] = projects.length;
+                const mapped = availableAssignments.MapProject[item.project_id];
+                projects[projects.length] = {
+                    project_id: item.project_id,
+                    name: `${mapped.name} (client #${mapped.client_id})`,
+                    items: [],
+                };
+            }
+            projects[mapping[item.project_id]].items.push({
+                name: `Activity #${item.activity_id} ${item.task_name || ''}`,
+                activity_id: item.activity_id,
+                task_id: item.task_id,
+            });
+        });
+        return projects;
+    }
+
+    function reloadAssignmentsForSelectedProject() {
+        const items = JSON.parse(getSelectedOption('project-start').getAttribute('data-items')) || [];
+
+        const assignmentSelect = document.getElementById('activity-start');
+        assignmentSelect.innerHTML = '';
+        items.forEach((item, index) => {
+            const option = new Option(item.name, item.project_id, false, index == 0);
+            option.setAttribute('data-activity', item.activity_id || '');
+            option.setAttribute('data-task', item.task_id || '');
+            assignmentSelect.options[index] = option;
+        });
+        assignmentSelect.disabled = items.length <= 1;
+    }
 }
 
 function getSelectedAssignment() {
-    const projectsSelect = document.getElementById('project-start');
-    const selectedProject = projectsSelect[projectsSelect.selectedIndex || 0];
+    const selectedProject = getSelectedOption('project-start');
+    const selectedActivity = getSelectedOption('activity-start');
     return {
         project_id: selectedProject.value || null,
-        activity_id: selectedProject.getAttribute('data-activity') || null,
-        task_id: selectedProject.getAttribute('data-task') || null
+        activity_id: selectedActivity.getAttribute('data-activity') || null,
+        task_id: selectedActivity.getAttribute('data-task') || null
+    };
+}
+
+function getSelectedOption(id) {
+    const select = document.getElementById(id);
+    return select[select.selectedIndex || 0] || {
+        value: null,
+        getAttribute: () => null
     };
 }
 
