@@ -19,15 +19,11 @@ function sendApiCall(settings, callback) {
 }
 
 function showPage(selectedPage) {
-    [
-        'page-loading',
-        'page-tracking-start',
-        'page-tracking-stop',
-        'page-error',
-        'page-login'
-    ].forEach(page => {
-        document.getElementById(page).className = page == selectedPage ? '' : 'hide';
-    });
+    const pages = document.getElementsByTagName('section');
+    for(let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        page.className = page.id == selectedPage ? '' : 'hide';
+    }
 }
 
 let runningEntry = null;
