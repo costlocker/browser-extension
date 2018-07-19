@@ -76,7 +76,7 @@ document.getElementById('tracking-start').onclick = function () {
             }
         },
         function (data) {
-            runningEntry = data.data[data.data.length - 1];
+            runningEntry = { uuid: 'irrelevant uuid' };
             reloadIcon();
             window.close();
         }
@@ -186,12 +186,12 @@ function assignmentToString(item) {
 }
 
 function getSelectedAssignment() {
-    return JSON.parse(getSelectedOption().replace(/'/g, '"'));
-}
-
-function getSelectedOption() {
     const select = document.getElementById('project-start');
-    return select[select.selectedIndex || 0].value;
+    if (select.selectedIndex === -1) {
+        return null;
+    }
+    const encodedAssignment = select[select.selectedIndex].value;
+    return JSON.parse(encodedAssignment.replace(/'/g, '"'));
 }
 
 function loadDataFromCurrentPage() {
