@@ -3,6 +3,10 @@
 
 ## [Chrome](https://developer.chrome.com/extensions)
 
+```bash
+ln -sf manifest-chrome.json manifest.json
+```
+
 1. [chrome://extensions](chrome://extensions)
 1. Developer Mode
 1. Load Unpacked Extension
