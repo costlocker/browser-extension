@@ -114,66 +114,28 @@ function showPopup () {
 function loadAssignments(availableAssignments) {
     const projectsSelect = document.getElementById('project-start');
     projectsSelect.innerHTML = '';
-    projectsSelect.options[0] = new Option('[No project]', '', true);
-
-    groupAssignmentsByProject().forEach((item, index) => {
-        const option = new Option(item.name, item.project_id);
-        option.setAttribute('data-items', JSON.stringify(item.items));
-        projectsSelect.options[index + 1] = option;
+    availableAssignments.forEach((item, index) => {
+        const option = new Option(formatItem(item), index);
+        option.setAttribute('data-assignment', JSON.stringify(item.assignment));
+        projectsSelect.options[index] = option;
     });
-    projectsSelect.addEventListener('change', reloadAssignmentsForSelectedProject);
 
-    function groupAssignmentsByProject() {
-        const projects = [];
-        const mapping = {};
-        availableAssignments.forEach((item, index) => {
-            if (!mapping[item.assignment.project_id]) {
-                mapping[item.assignment.project_id] = projects.length;
-                projects[projects.length] = {
-                    project_id: item.assignment.project_id,
-                    name: `${item.names.project_name} (${item.names.client_name})`,
-                    items: [],
-                };
-            }
-            const task = item.assignment.task_id ? ` - ${item.names.task_name}` : '';
-            projects[mapping[item.assignment.project_id]].items.push({
-                name: `${item.names.activity_name} ${task}`,
-                activity_id: item.assignment.activity_id,
-                task_id: item.assignment.task_id,
-            });
-        });
-        return projects;
-    }
-
-    function reloadAssignmentsForSelectedProject() {
-        const items = JSON.parse(getSelectedOption('project-start').getAttribute('data-items')) || [];
-
-        const assignmentSelect = document.getElementById('activity-start');
-        assignmentSelect.innerHTML = '';
-        items.forEach((item, index) => {
-            const option = new Option(item.name, item.project_id, false, index == 0);
-            option.setAttribute('data-activity', item.activity_id || '');
-            option.setAttribute('data-task', item.task_id || '');
-            assignmentSelect.options[index] = option;
-        });
-        assignmentSelect.disabled = items.length <= 1;
+    function formatItem(item) {
+        if (!item.assignment.project_id) {
+            return '[No project]';
+        }
+        const task = item.assignment.task_id ? ` - ${item.names.task_name}` : '';
+        return `${item.names.project_name} (${item.names.client_name}) - ${item.names.activity_name}${task}`;
     }
 }
 
 function getSelectedAssignment() {
-    const selectedProject = getSelectedOption('project-start');
-    const selectedActivity = getSelectedOption('activity-start');
-    return {
-        project_id: selectedProject.value || null,
-        activity_id: selectedActivity.getAttribute('data-activity') || null,
-        task_id: selectedActivity.getAttribute('data-task') || null
-    };
+    return JSON.parse(getSelectedOption().getAttribute('data-assignment'));
 }
 
-function getSelectedOption(id) {
-    const select = document.getElementById(id);
+function getSelectedOption() {
+    const select = document.getElementById('project-start');
     return select[select.selectedIndex || 0] || {
-        value: null,
         getAttribute: () => null
     };
 }
