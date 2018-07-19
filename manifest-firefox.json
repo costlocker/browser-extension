@@ -1,0 +1,56 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "costlocker-button@costlocker.com",
+      "strict_min_version": "50.0"
+    }
+  },
+  "name": "Costlocker Tracking Button",
+  "description": "Track time from any web tool (Trello, JIRA, Google Calendar etc.)",
+  "short_name": "Costlocker Button",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "assets/icons/inactive-16x16.png",
+      "32": "assets/icons/inactive-32x32.png",
+      "48": "assets/icons/inactive-48x48.png",
+      "128": "assets/icons/inactive-128x128.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options.html"
+  },
+  "background": {
+    "scripts": [
+      "src/api.js"
+    ]
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+T",
+        "mac": "MacCtrl+Shift+T"
+      },
+      "description": "Opens hello.html"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/inactive-16x16.png",
+    "32": "assets/icons/inactive-32x32.png",
+    "48": "assets/icons/inactive-48x48.png",
+    "128": "assets/icons/inactive-128x128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "cookies",
+    "http://app.costlocker.local/*"
+  ],
+  "content_scripts": [
+    { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },
+    { "matches": ["https://calendar.google.com/*"], "js": ["providers/google-calendar.js"], "run_at": "document_idle" },
+    { "matches": ["*://*.atlassian.com/*", "*://*.atlassian.net/*"], "js": ["providers/jira.js"], "run_at": "document_idle" }
+  ]
+}
