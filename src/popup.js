@@ -101,6 +101,7 @@ function showPopup () {
             reloadIcon();
             loadAssignments(data.Simple_Tracking_Assignments);
             if (isRunning()) {
+                document.getElementById('project-running').value = assignmentToString(runningEntry);
                 document.getElementById('description-running').value = runningEntry.description;
                 showPage('page-tracking-stop');
             } else {
@@ -115,18 +116,18 @@ function loadAssignments(availableAssignments) {
     const projectsSelect = document.getElementById('project-start');
     projectsSelect.innerHTML = '';
     availableAssignments.forEach((item, index) => {
-        const option = new Option(formatItem(item), index);
+        const option = new Option(assignmentToString(item), index);
         option.setAttribute('data-assignment', JSON.stringify(item.assignment));
         projectsSelect.options[index] = option;
     });
+}
 
-    function formatItem(item) {
-        if (!item.assignment.project_id) {
-            return '[No project]';
-        }
-        const task = item.assignment.task_id ? ` - ${item.names.task_name}` : '';
-        return `${item.names.project_name} (${item.names.client_name}) - ${item.names.activity_name}${task}`;
+function assignmentToString(item) {
+    if (!item.assignment.project_id) {
+        return '[No project]';
     }
+    const task = item.assignment.task_id ? ` - ${item.names.task_name}` : '';
+    return `${item.names.project_name} (${item.names.client_name}) - ${item.names.activity_name}${task}`;
 }
 
 function getSelectedAssignment() {
