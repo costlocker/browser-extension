@@ -6,32 +6,34 @@
         <link rel="stylesheet" href="../assets/css/options.css" />
     </head>
     <body>
-        <h2>Time-entry description</h2>
-        <p>
-            Let's say you tracking on Trello card <em>Redesign homepage</em> with id 123.
-            You might define that you want to save tracking <em>#123 - Redesign homepage</em>.
-        </p>
-        <ul>
-            <li>
-                <label>
-                    <input type="checkbox" id="id_before_description" />
-                    Add ID before description text
-                </label>
-            </li>
-            <li>
-                <label>
-                    Text before ID<br />
-                    <input type="text" id="id_prefix" placeholder="#" />
-                </label>
-            </li>
-            <li>
-                <label>
-                    Text after ID<br />
-                    <input type="text" id="id_suffix" placeholder=" -" />
-                </label>
-            </li>
-        </ul>
-        <button id="save">Save</button>
+        <section>
+            <h2>Time-entry description</h2>
+            <p>
+                Let's say you tracking on Trello card <em>Redesign homepage</em> with id 123.
+                You might define that you want to save tracking <em>#123 - Redesign homepage</em>.
+            </p>
+            <ul>
+                <li>
+                    <label>
+                        <input type="checkbox" id="id_before_description" />
+                        Add ID before description text
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="label">Text before ID</span>
+                        <input type="text" id="id_prefix" placeholder="#" />
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <span class="label">Text after ID</span>
+                        <input type="text" id="id_suffix" placeholder=" -" />
+                    </label>
+                </li>
+            </ul>
+            <button id="save" class="btn btn-success">Save</button>
+        </section>
         <script src="options.js"></script>
     </body>
 </html>

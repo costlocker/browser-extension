@@ -2,6 +2,7 @@
     <head>
         <title>Costlocker Tracking Button</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../vendor/choices/choices-3.0.4.min.css" />
         <link rel="stylesheet" href="../assets/css/popup.css" />
         <link rel="stylesheet" href="../assets/css/loading.css" />
     </head>
@@ -19,30 +20,40 @@
         </section>
 
         <section id="page-tracking-start" class="hide">
-            <h1>Costlocker</h1>
-            <label>
-                Project:
-                <select id="project-start">
-                </select>
+            <h1>
+                <span id="costlocker" class="open-costlocker">
+                    <img src="../assets/icons/inactive-16x16.png" alt="Costlocker" title="Go to Costlocker" />
+                </span>
+                Start tracking
+            </h1>
+            <label for="project-start">
+                <span class="label">Project:</span>
             </label>
+            <select id="project-start" placeholder="Select a task or type to search">
+            </select>
             <label>
-                Description:
-                <input type="text" maxlength="255" id="description-start" />
+                    <span class="label">Description:</span>
+                <input type="text" maxlength="255" id="description-start" class="timetracking-input__input" />
             </label>
-            <button id="tracking-start">Start Tracking</button>
+            <button id="tracking-start" class="btn btn-success">Start</button>
         </section>
 
         <section id="page-tracking-stop" class="hide">
-            <h1>Costlocker</h1>
+            <h1>
+                <span id="costlocker" class="open-costlocker">
+                    <img src="../assets/icons/active-16x16.png" alt="Costlocker" title="Go to Costlocker" />
+                </span>
+                Stop tracking
+            </h1>
             <label>
-                Project:
-                <input type="text" disabled id="project-running" />
+                <span class="label">Project:</span>
+                <div id="project-running" class="choices disabled"></div>
             </label>
             <label>
-                Description:
-                <input type="text" maxlength="255" id="description-running" />
+                <span class="label">Description:</span>
+                <input type="text" maxlength="255" id="description-running" class="timetracking-input__input" />
             </label>
-            <button id="tracking-stop">Stop Tracking</button>
+            <button id="tracking-stop" class="btn btn-warning">Stop</button>
         </section>
 
         <section id="page-error" class="hide">
@@ -58,14 +69,12 @@
         </section>
 
         <div class="controls">
-            <button id="costlocker" class="open-costlocker">
-                <img src="../assets/icons/inactive-16x16.png" alt="Costlocker" title="Go to Costlocker" />
-            </button>
             <button id="options" title="Edit options">&#x2699;</button>
             <button id="close" title="Close popup">&#x2716;</button>
         </div>
 
         <script src="../vendor/dayjs-1.5.24.min.js"></script>
+        <script src="../vendor/choices/choices-3.0.3.min.js"></script>
         <script src="popup.js"></script>
         <script src="../providers/any-page.js"></script>
     </body>
