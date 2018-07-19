@@ -48,14 +48,10 @@ document.getElementById('tracking-stop').onclick = function () {
             path: '/api-public/v2/timeentries/',
             data: {
                 uuid: runningEntry.uuid,
-                date: runningEntry.dt,
+                date: runningEntry.date,
                 description: document.getElementById('description-running').value,
-                duration: dayjs().diff(dayjs(runningEntry.dt), 'seconds'),
-                assignment: {
-                    project_id: runningEntry.project_id,
-                    activity_id: runningEntry.activity_id,
-                    task_id: runningEntry.task_id,
-                }
+                duration: dayjs().diff(dayjs(runningEntry.date.replace('+0000', '')), 'seconds'),
+                assignment: runningEntry.assignment
             }
         },
         function (data) {
@@ -94,21 +90,18 @@ function showPopup () {
     sendApiCall(
         {
             method: 'POST',
-            path: '/api',
+            path: '/api-public/v1',
             data: {
-                Resource_Tracking_RunningEntry: {
-                },
-                Resource_Tracking_AvailableAssignments: {
-                    tracking: true
-                }
+                Simple_Tracking_RunningEntry: {},
+                Simple_Tracking_Assignments: {}
             }
         },
         function (data) {
-            runningEntry = data.Resource_Tracking_RunningEntry;
+            runningEntry = data.Simple_Tracking_RunningEntry;
             reloadIcon();
-            loadAssignments(data.Resource_Tracking_AvailableAssignments);
+            loadAssignments(data.Simple_Tracking_Assignments);
             if (isRunning()) {
-                document.getElementById('description-running').value = runningEntry.name;
+                document.getElementById('description-running').value = runningEntry.description;
                 showPage('page-tracking-stop');
             } else {
                 showPage('page-tracking-start');
@@ -124,7 +117,6 @@ function loadAssignments(availableAssignments) {
     projectsSelect.options[0] = new Option('[No project]', '', true);
 
     groupAssignmentsByProject().forEach((item, index) => {
-        const project = availableAssignments.MapProject[item.project_id].name;
         const option = new Option(item.name, item.project_id);
         option.setAttribute('data-items', JSON.stringify(item.items));
         projectsSelect.options[index + 1] = option;
@@ -134,20 +126,20 @@ function loadAssignments(availableAssignments) {
     function groupAssignmentsByProject() {
         const projects = [];
         const mapping = {};
-        availableAssignments.Items.forEach((item, index) => {
-            if (!mapping[item.project_id]) {
-                mapping[item.project_id] = projects.length;
-                const mapped = availableAssignments.MapProject[item.project_id];
+        availableAssignments.forEach((item, index) => {
+            if (!mapping[item.assignment.project_id]) {
+                mapping[item.assignment.project_id] = projects.length;
                 projects[projects.length] = {
-                    project_id: item.project_id,
-                    name: `${mapped.name} (client #${mapped.client_id})`,
+                    project_id: item.assignment.project_id,
+                    name: `${item.names.project_name} (${item.names.client_name})`,
                     items: [],
                 };
             }
-            projects[mapping[item.project_id]].items.push({
-                name: `Activity #${item.activity_id} ${item.task_name || ''}`,
-                activity_id: item.activity_id,
-                task_id: item.task_id,
+            const task = item.assignment.task_id ? ` - ${item.names.task_name}` : '';
+            projects[mapping[item.assignment.project_id]].items.push({
+                name: `${item.names.activity_name} ${task}`,
+                activity_id: item.assignment.activity_id,
+                task_id: item.assignment.task_id,
             });
         });
         return projects;
