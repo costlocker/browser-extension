@@ -134,21 +134,7 @@ function loadAssignments(availableAssignments) {
         callbackOnCreateTemplates: function (template) {
             var classNames = this.config.classNames;
             const render = (buildContainer) => {
-                return (data) => {
-                    if (!data.customProperties.project_name) {
-                        return template(`
-                            <div ${buildContainer(data)}>
-                                <div class="timesheet-task-search__project">
-                                    [No project]
-                                </div>
-                                <div class="timesheet-task-search__activity-task">
-                                    Select a task...
-                                </div>
-                            </div>
-                        `);
-                    }
-                    return template(renderAssignmentOption(data.customProperties, buildContainer(data)));
-                  }
+                return (data) => template(renderAssignmentOption(data.customProperties, buildContainer(data)));
             };
             return {
               item: render((data) => `class="${classNames.item} ${data.highlighted ? classNames.highlightedState : classNames.itemSelectable}" data-item data-id="${data.id}" data-value="${data.value}" ${data.active ? 'aria-selected="true"' : ''} ${data.disabled ? 'aria-disabled="true"' : ''}`),
@@ -166,6 +152,18 @@ function loadAssignments(availableAssignments) {
 }
 
 function renderAssignmentOption(names, container) {
+    if (!names.project_name) {
+        return `
+            <div ${container}>
+                <div class="timesheet-task-search__project">
+                    [No project]
+                </div>
+                <div class="timesheet-task-search__activity-task">
+                    Select a task...
+                </div>
+            </div>
+        `;
+    }
     const task = names.task_name !== null ? ` - ${names.task_name}` : '';
     return `
         <div ${container}>
