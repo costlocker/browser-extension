@@ -52,7 +52,7 @@ function processApiCall(settings, callback) {
                 }))
                 .catch(error => Promise.resolve(error.json).then(json => {
                     callback({
-                        status: json.type == 'LoggedOut' ? 401 : 400,
+                        status: json.errors && json.errors[0].status == 403 || json.type == 'LoggedOut' ? 401 : 400,
                         json: json,
                     });
                 }));
