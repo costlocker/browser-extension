@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -u
+set -e
+
+BROWSER=$1
+
+EXTENSION_DIR=""
+BROWSER_DIR=""
+BROWSER_DIR_TEMP=""
+ARCHIVE=""
+
+run () {
+    load_dirs
+    copy_extension
+    configure_manifest
+    create_release
+}
+
+load_dirs() {
+    EXTENSION_DIR=$(realpath "$(dirname $0)/../")
+    BROWSER_DIR_TEMP="$EXTENSION_DIR/../$BROWSER"
+    BROWSER_DIR="$EXTENSION_DIR/$BROWSER"
+    ARCHIVE="$EXTENSION_DIR/$BROWSER.zip"
+}
+
+copy_extension() {
+    mkdir -p $BROWSER_DIR_TEMP
+    cp -r $EXTENSION_DIR/* $BROWSER_DIR_TEMP
+    mv $BROWSER_DIR_TEMP $BROWSER_DIR
+}
+
+configure_manifest() {
+    mv $BROWSER_DIR/manifest-$BROWSER.json $BROWSER_DIR/manifest.json
+    rm $BROWSER_DIR/manifest-*.json
+}
+
+create_release() {
+    echo "Creating $ARCHIVE..."
+    (cd $BROWSER_DIR && zip -r $ARCHIVE ./*)
+    rm -rf $BROWSER_DIR
+}
+
+run

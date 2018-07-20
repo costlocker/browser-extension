@@ -1,0 +1,15 @@
+install:
+  - apt-get install -y zip
+script:
+  - .ci/release-extension chrome
+  - .ci/release-extension firefox
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file:
+    - chrome.zip
+    - firefox.zip
+  skip_cleanup: true
+  on:
+    tags: true
