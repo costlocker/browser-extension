@@ -1,5 +1,5 @@
 install:
-  - apt-get install -y zip
+  - sudo apt-get install -y zip
 script:
   - .ci/release-extension chrome
   - .ci/release-extension firefox
