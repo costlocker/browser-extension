@@ -15,6 +15,13 @@ Costlocker Tracking Button enables tracking time from any web tool
 * [Google Calendar](https://www.google.com/calendar)
 * any page _(page title is used)_
 
+## Changelog
+
+#### 2018.07.23
+
+* Chrome/Firefox extension
+* _providers:_ Trello, JIRA, Google Calendar, any page
+
 ---
 
 ## Development
