@@ -46,7 +46,7 @@
     "activeTab",
     "storage",
     "cookies",
-    "http://app.costlocker.local/*"
+    "https://new.costlocker.com/*"
   ],
   "content_scripts": [
     { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },

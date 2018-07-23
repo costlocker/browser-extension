@@ -40,7 +40,7 @@
     "activeTab",
     "storage",
     "cookies",
-    "http://costlocker.php7:8080/*"
+    "https://new.costlocker.com/*"
   ],
   "content_scripts": [
     { "matches": ["https://trello.com/*"], "js": ["providers/trello.js"], "run_at": "document_idle" },
