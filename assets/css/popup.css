@@ -8,16 +8,24 @@ body {
     background: #f2f2f2;
     width: 360px;
     min-height: 50px;
+    font-family: sans-serif;
+    font-size: 14px;
+    overflow: hidden;
 }
-.tracking-window {
-    height: 250px;
+.tracking-dropdown-hide {
+    height: 290px;
+}
+.tracking-dropdown-show {
+    height: 500px;
 }
 
 section {
-    margin: 1em;
+    margin: 14px;
 }
 h1 {
     margin: 0;
+    font-size: 20px;
+    font-weight: normal;
 }
 .label {
     display: block;
@@ -34,9 +42,6 @@ h1 {
     background: white;
 }
 .choices__list--dropdown.is-active {
-    /*background: green;
-    position: fixed !important;
-    top: 0;*/
     overflow: visible;
 }
 
@@ -46,7 +51,6 @@ h1 {
     padding: 7.5px;
     height: 44px;
     line-height: 44px;
-    font-size: 1.1em;
 }
 
 #page-error {
@@ -54,6 +58,7 @@ h1 {
 }
 #error-message {
     color: gray;
+    font-size: 12px;
     white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
@@ -71,7 +76,7 @@ h1 {
     display: block;
     margin-top: 1em;
     width: 100%;
-    font-size: 1.1em;
+    border: 0;
 }
 .btn-success {
     background: #4db07a;
@@ -91,30 +96,21 @@ h1 {
 }
 
 .controls {
-    padding-top: 1em;
-    font-size: 0.8;
+    padding: 11px 11px 0 0;
     text-align: center;
     vertical-align: middle;
     position: fixed;
     top: 0;
     right: 0;
 }
-.controls button {
+.controls img {
     display: inline-block;
-    margin: 1ex;
-    padding: 0;
-    width: auto;
-    background: transparent;
-    border: 0;
-    color: gray;
-    line-height: 20px;
-    font-size: 16px;
-    text-align: center;
-    vertical-align: middle;
-    opacity: 0.4;
+    padding: 3px;
+    opacity: 0.2;
 }
-.controls button:hover {
+.controls img:hover {
     opacity: 1;
+    cursor: pointer;
 }
 
 .timesheet-task-search__client, .timesheet-task-search__activity-task {

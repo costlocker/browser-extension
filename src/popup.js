@@ -18,6 +18,10 @@ function sendApiCall(settings, callback) {
     );
 }
 
+function isFirefox() {
+    return typeof browser !== "undefined";
+}
+
 function showPage(selectedPage) {
     const pages = document.getElementsByTagName('section');
     for(let i = 0; i < pages.length; i++) {
@@ -101,7 +105,7 @@ function showPopup () {
             reloadIcon();
             loadAssignments(data.Simple_Tracking_Assignments);
             if (isRunning()) {
-                document.getElementById('project-running').innerHTML = renderAssignmentOption(runningEntry.names, 'class="choices__inner"');
+                document.getElementById('project-running').innerHTML = renderAssignmentOption(runningEntry.names, 'class="choices__list--single"');
                 document.getElementById('description-running').value = runningEntry.description;
                 showPage('page-tracking-stop');
             } else {
@@ -141,14 +145,21 @@ function loadAssignments(availableAssignments) {
               choice: render((data) => `class="${classNames.item} ${classNames.itemChoice} ${data.disabled ? classNames.itemDisabled : classNames.itemSelectable}" data-select-text="${this.config.itemSelectText}" data-choice ${data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable'} data-id="${data.id}" data-value="${data.value}" ${data.groupId > 0 ? 'role="treeitem"' : 'role="option"'}`),
             };
         },
-    });    
-    projectsSelect.addEventListener(
-        'hideDropdown',
-        function(event) {
-            document.body.parentElement.className = 'tracking-window'; // hack for popup height
-        },
-        false
-    );
+    });
+    adaptPopupHeight('hideDropdown', 'tracking-dropdown-hide');
+    if (isFirefox()) {
+        adaptPopupHeight('showDropdown', 'tracking-dropdown-show');
+    }
+
+    function adaptPopupHeight(event, css) {
+        projectsSelect.addEventListener(
+            event,
+            function(event) {
+                document.body.parentElement.className = css;
+            },
+            false
+        );
+    }
 }
 
 function renderAssignmentOption(names, container) {

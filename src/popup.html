@@ -2,6 +2,7 @@
     <head>
         <title>Costlocker Tracking Button</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="../assets/css/reset.css" />
         <link rel="stylesheet" href="../vendor/choices/choices-3.0.4.min.css" />
         <link rel="stylesheet" href="../assets/css/popup.css" />
         <link rel="stylesheet" href="../assets/css/loading.css" />
@@ -47,7 +48,9 @@
             </h1>
             <label>
                 <span class="label">Project:</span>
-                <div id="project-running" class="choices disabled"></div>
+                <div class="choices disabled">
+                    <div class="choices__inner" id="project-running"></div>
+                </div>
             </label>
             <label>
                 <span class="label">Description:</span>
@@ -69,8 +72,8 @@
         </section>
 
         <div class="controls">
-            <button id="options" title="Edit options">&#x2699;</button>
-            <button id="close" title="Close popup">&#x2716;</button>
+            <img id="options" title="Edit options" src="../assets/icons/settings.png" />
+            <img id="close" title="Close popup" src="../assets/icons/close.png" />
         </div>
 
         <script src="../vendor/dayjs-1.5.24.min.js"></script>
