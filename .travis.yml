@@ -1,5 +1,5 @@
 install:
-  - sudo apt-get install -y zip
+  - sudo apt-get install -y zip realpath
 script:
   - .ci/release-extension chrome
   - .ci/release-extension firefox
