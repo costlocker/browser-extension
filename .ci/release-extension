@@ -13,7 +13,7 @@ ARCHIVE=""
 run () {
     load_dirs
     copy_extension
-    configure_manifest
+    configure_app
     create_release
 }
 
@@ -30,9 +30,10 @@ copy_extension() {
     mv $BROWSER_DIR_TEMP $BROWSER_DIR
 }
 
-configure_manifest() {
+configure_app() {
     mv $BROWSER_DIR/manifest-$BROWSER.json $BROWSER_DIR/manifest.json
     rm $BROWSER_DIR/manifest-*.json
+    rm -f $BROWSER_DIR/*.zip
 }
 
 create_release() {
