@@ -162,8 +162,8 @@ function loadAssignments(availableAssignments) {
     }
 }
 
-function renderAssignmentOption(names, container) {
-    if (!names.project_name) {
+function renderAssignmentOption(unsafeNames, container) {
+    if (!unsafeNames.project_name) {
         return `
             <div ${container}>
                 <div class="timesheet-task-search__project">
@@ -175,6 +175,7 @@ function renderAssignmentOption(names, container) {
             </div>
         `;
     }
+    const names = escapeObject(unsafeNames);
     const task = names.task_name !== null ? ` - ${names.task_name}` : '';
     return `
         <div ${container}>
