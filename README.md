@@ -5,8 +5,8 @@ Costlocker Tracking Button enables tracking time from any web tool
 
 ## Install extension
 
-* ~~[Chrome]()~~
-* ~~[Firefox]()~~
+* [Chrome](https://chrome.google.com/webstore/detail/ihdpfkpefjcjfhciiagefbpeangdpfnh)
+* [Firefox](https://addons.mozilla.org/addon/costlocker-tracking-button/)
 
 ## Supported tools
 
