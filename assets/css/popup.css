@@ -41,6 +41,9 @@ h1 {
 .choices__inner {
     background: white;
 }
+.choices__inner.one-line {
+    min-height: auto;
+}
 .choices__list--dropdown.is-active {
     overflow: visible;
 }

@@ -136,7 +136,7 @@ function showRunningTime() {
     const time = new Date(null);
     time.setSeconds(countRunningSeconds(date))
     document.getElementById('duration-time').textContent = time.toISOString().substr(11, 8);
-    document.getElementById('duration-date').textContent = date.format('YYYY-MM-DD HH:mm:ss');
+    document.getElementById('duration-time').setAttribute('title', date.format('YYYY-MM-DD HH:mm:ss'));
 }
 
 function closePopup() {
