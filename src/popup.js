@@ -32,10 +32,19 @@ function showPage(selectedPage) {
 
 let runningEntry = null;
 let externalIds = null;
+let runningEntryInterval = null;
 let trackingButton = document.getElementById('tracking-button');
 
 function isRunning() {
     return runningEntry && runningEntry.uuid;
+}
+
+function countRunningSeconds(date) {
+    return isRunning() ? dayjs().diff(date, 'seconds') : 0;
+}
+
+function getRunningDate() {
+    return dayjs(runningEntry.date.replace('+0000', ''));
 }
 
 function reloadIcon(callback) {
@@ -55,7 +64,7 @@ document.getElementById('tracking-stop').onclick = function () {
                 uuid: runningEntry.uuid,
                 date: runningEntry.date,
                 description: document.getElementById('description-running').value,
-                duration: dayjs().diff(dayjs(runningEntry.date.replace('+0000', '')), 'seconds'),
+                duration: countRunningSeconds(getRunningDate()),
                 assignment: runningEntry.assignment
             }
         },
@@ -107,6 +116,11 @@ function showPopup () {
             if (isRunning()) {
                 document.getElementById('project-running').innerHTML = renderAssignmentOption(runningEntry.names, 'class="choices__list--single"');
                 document.getElementById('description-running').value = runningEntry.description;
+                showRunningTime();
+                if (runningEntryInterval) {
+                    clearInterval(runningEntryInterval);
+                }
+                runningEntryInterval = setInterval(showRunningTime, 1000)
                 showPage('page-tracking-stop');
             } else {
                 showPage('page-tracking-start');
@@ -114,6 +128,14 @@ function showPopup () {
         }
     );
     loadDataFromCurrentPage();
+}
+
+function showRunningTime() {
+    const date = getRunningDate();
+    const time = new Date(null);
+    time.setSeconds(countRunningSeconds(date))
+    document.getElementById('duration-time').textContent = time.toISOString().substr(11, 8);
+    document.getElementById('duration-date').textContent = date.format('YYYY-MM-DD HH:mm:ss');
 }
 
 function closePopup() {
