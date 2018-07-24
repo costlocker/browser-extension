@@ -42,6 +42,7 @@
     "48": "assets/icons/inactive-48x48.png",
     "128": "assets/icons/inactive-128x128.png"
   },
+  "incognito": "spanning",
   "permissions": [
     "activeTab",
     "storage",
