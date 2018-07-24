@@ -72,6 +72,7 @@ document.getElementById('tracking-stop').onclick = function () {
             runningEntry = null;
             reloadIcon();
             showPage('page-tracking-start');
+            setPopupHeight();
         }
     );
 };
@@ -172,20 +173,22 @@ function loadAssignments(availableAssignments) {
             };
         },
     });
-    adaptPopupHeight('hideDropdown', 'tracking-dropdown-hide');
+    adaptPopupHeight('hideDropdown');
     if (isFirefox()) {
-        adaptPopupHeight('showDropdown', 'tracking-dropdown-show');
+        adaptPopupHeight('showDropdown');
     }
 
-    function adaptPopupHeight(event, css) {
+    function adaptPopupHeight(event) {
         projectsSelect.addEventListener(
             event,
-            function(event) {
-                document.body.parentElement.className = css;
-            },
+            () => setPopupHeight(event == 'showDropdown'),
             false
         );
     }
+}
+
+function setPopupHeight(isDropdownVisible) {
+    document.body.parentElement.className = isDropdownVisible ? 'tracking-dropdown-show' : 'tracking-dropdown-hide';
 }
 
 function renderAssignmentOption(unsafeNames, container) {
