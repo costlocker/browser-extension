@@ -17,7 +17,14 @@ Costlocker Tracking Button enables tracking time from any web tool
 
 ## Changelog
 
-#### 2018.07.23
+#### 2018.7.24
+
+* Add running tracking duration
+* Fix changing icon when time-tracking is started
+* Prevent XSS attacks in assignment
+* _Chrome:_ fix authenticating in incognito mode
+
+#### 2018.7.23
 
 * Chrome/Firefox extension
 * _providers:_ Trello, JIRA, Google Calendar, any page
