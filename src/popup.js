@@ -38,11 +38,12 @@ function isRunning() {
     return runningEntry && runningEntry.uuid;
 }
 
-function reloadIcon() {
+function reloadIcon(callback) {
     const status = isRunning() ? 'active' : 'inactive';
-    chrome.browserAction.setIcon({
-        path: `../assets/icons/${status}-48x48.png`
-    });
+    chrome.browserAction.setIcon(
+        { path: `../assets/icons/${status}-48x48.png` },
+        callback
+    );
 }
 
 document.getElementById('tracking-stop').onclick = function () {
@@ -81,8 +82,7 @@ document.getElementById('tracking-start').onclick = function () {
         },
         function (data) {
             runningEntry = { uuid: 'irrelevant uuid' };
-            reloadIcon();
-            window.close();
+            reloadIcon(closePopup);
         }
     );
 };
@@ -114,6 +114,10 @@ function showPopup () {
         }
     );
     loadDataFromCurrentPage();
+}
+
+function closePopup() {
+    window.close();
 }
 
 function loadAssignments(availableAssignments) {
@@ -248,11 +252,11 @@ function loadTimeentryFromPage(data, tab) {
 document.querySelectorAll('.open-costlocker').forEach(
     link => link.addEventListener('click', function() {
         chrome.tabs.create({url: 'https://new.costlocker.com/'});
-        window.close();
+        closePopup();
     }
 ));
 document.querySelector('#close').addEventListener('click', function() {
-    window.close();
+    closePopup();
 });
 document.querySelector('#options').addEventListener('click', function() {
     chrome.runtime.openOptionsPage();
