@@ -17,6 +17,11 @@ Costlocker Tracking Button enables tracking time from any web tool
 
 ## Changelog
 
+#### 2018.7.27
+
+* Fix searched fields for assignment
+* Don't forget changes in running description
+
 #### 2018.7.24
 
 * Add running tracking duration
