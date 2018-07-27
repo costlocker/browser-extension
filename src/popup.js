@@ -78,6 +78,8 @@ document.getElementById('tracking-stop').onclick = function () {
 };
 
 document.getElementById('tracking-start').onclick = function () {
+    const description = document.getElementById('description-start').value;
+    saveRunningDescription(description);
     sendApiCall(
         {
             method: 'POST',
@@ -85,7 +87,7 @@ document.getElementById('tracking-start').onclick = function () {
             data: {
                 date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
                 duration: null,
-                description: document.getElementById('description-start').value,
+                description: description,
                 assignment: getSelectedAssignment(),
                 external_ids: externalIds
             }
@@ -116,7 +118,7 @@ function showPopup () {
             loadAssignments(data.Simple_Tracking_Assignments);
             if (isRunning()) {
                 document.getElementById('project-running').innerHTML = renderAssignmentOption(runningEntry.names, 'class="choices__list--single"');
-                document.getElementById('description-running').value = runningEntry.description;
+                showEditableRunningDescription(runningEntry.description);
                 showRunningTime();
                 if (runningEntryInterval) {
                     clearInterval(runningEntryInterval);
@@ -129,6 +131,26 @@ function showPopup () {
         }
     );
     loadDataFromCurrentPage();
+}
+
+function showEditableRunningDescription(defaultDescription) {
+    chrome.storage.local.get(
+        { runningDescription: defaultDescription },
+        function (data) {
+            document.getElementById('description-running').value = data.runningDescription;
+        }
+    );
+    document.getElementById('description-running').addEventListener('input', function () {
+        saveRunningDescription(this.value);
+    });
+}
+
+function saveRunningDescription(value) {
+    if (value && value.length) {
+        chrome.storage.local.set({ runningDescription: value });
+    } else {
+        chrome.storage.local.remove('runningDescription');
+    }
 }
 
 function showRunningTime() {
