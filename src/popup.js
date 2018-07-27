@@ -183,6 +183,12 @@ function loadAssignments(availableAssignments) {
         choices: options,
         maxItemCount: 1,
         searchResultLimit: 5,
+        searchFields: [
+            'customProperties.task_name',
+            'customProperties.project_name',
+            'customProperties.activity_name',
+            'customProperties.client_name',
+        ],
         position: 'bottom',
         callbackOnCreateTemplates: function (template) {
             var classNames = this.config.classNames;
