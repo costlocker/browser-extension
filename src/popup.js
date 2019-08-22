@@ -100,10 +100,11 @@ function reloadTrackingMode(isSaveEnabled) {
 
 addClickHandlers('[data-tracking-start]', () => saveTracking(true));
 addClickHandlers('[data-tracking-save]', () => saveTracking(false));
+clDurationInput(document.getElementById('duration-save'), convertSecondsToTime);
 
 function saveTracking(isTrackingStarted) {
     const description = document.getElementById('description-start').value;
-    const rawSeconds = parseInt(document.getElementById('duration-save').value);
+    const rawSeconds = parseInt(document.getElementById('duration-save').getAttribute('data-seconds'));
     const seconds = rawSeconds && rawSeconds > 0 ? rawSeconds : 0;
     const date = dayjs().subtract(seconds, 'second');
     saveRunningDescription(description);
@@ -188,10 +189,15 @@ function saveRunningDescription(value) {
 
 function showRunningTime() {
     const date = getRunningDate();
-    const time = new Date(null);
-    time.setSeconds(countRunningSeconds(date))
-    document.getElementById('duration-time').textContent = time.toISOString().substr(11, 8);
+    const runningSeconds = countRunningSeconds(date);
+    document.getElementById('duration-time').textContent = convertSecondsToTime(runningSeconds);
     document.getElementById('duration-time').setAttribute('title', date.format('YYYY-MM-DD HH:mm:ss'));
+}
+
+function convertSecondsToTime(seconds) {
+    const time = new Date(null);
+    time.setSeconds(seconds)
+    return time.toISOString().substr(11, 8);
 }
 
 function closePopup() {
