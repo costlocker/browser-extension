@@ -20,12 +20,12 @@
             </div>
         </section>
 
-        <section id="page-tracking-start" class="hide">
+        <section id="page-tracking-start" class="hide save--disabled">
             <h1>
                 <span id="costlocker" class="open-costlocker">
                     <img src="../assets/icons/inactive-16x16.png" alt="Costlocker" title="Go to Costlocker" />
                 </span>
-                Start tracking
+                Time tracking
             </h1>
             <label for="project-start">
                 <span class="label">Project:</span>
@@ -36,7 +36,20 @@
                     <span class="label">Description:</span>
                 <input type="text" maxlength="255" id="description-start" class="timetracking-input__input" />
             </label>
-            <button id="tracking-start" class="btn btn-success">Start</button>
+            <label data-mode='save'>
+                <span class="label">Duration:</span>
+                <input type="number" min="0" id="duration-save" class="timetracking-input__input" />
+            </label>
+            <button data-mode='start' data-tracking-start class="btn btn-success">&#9654; Start</button>
+            <div class="row" data-mode='save'>
+                <div class="col-sm-6">
+                    <button data-tracking-start class="btn btn-success">&#9654; Start</button>
+                </div><!--
+                --><div class="col-sm-6">
+                    <button data-tracking-save class="btn btn-primary">Save</button>
+                </div>
+            </div>
+            <button data-mode='start' data-mode-toggle class="btn btn-link">Enable save mode</button>
         </section>
 
         <section id="page-tracking-stop" class="hide">

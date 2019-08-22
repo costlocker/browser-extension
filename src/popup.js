@@ -28,6 +28,11 @@ function showPage(selectedPage) {
         const page = pages[i];
         page.className = page.id == selectedPage ? '' : 'hide';
     }
+    if (selectedPage == 'page-tracking-start') {
+        // TODO: enable permanently enabled save in settings
+        reloadTrackingMode();
+        setPopupHeight();
+    }
 }
 
 let runningEntry = null;
@@ -72,32 +77,55 @@ document.getElementById('tracking-stop').onclick = function () {
             runningEntry = null;
             reloadIcon();
             showPage('page-tracking-start');
-            setPopupHeight();
         }
     );
 };
 
-document.getElementById('tracking-start').onclick = function () {
+addClickHandlers(
+    '[data-mode-toggle]',
+    (element) => reloadTrackingMode(element.getAttribute('data-mode') == 'start')
+);
+
+function reloadTrackingMode(isSaveEnabled) {
+    console.log('reload', isSaveEnabled);
+    const css = document.getElementById('page-tracking-start').classList;
+    css.remove('save--enabled', 'save--disabled');
+    css.add(isSaveEnabled ? 'save--enabled' : 'save--disabled');
+};
+
+addClickHandlers('[data-tracking-start]', () => saveTracking(true));
+addClickHandlers('[data-tracking-save]', () => saveTracking(false));
+
+function saveTracking(isTrackingStarted) {
     const description = document.getElementById('description-start').value;
+    const rawSeconds = parseInt(document.getElementById('duration-save').value);
+    const seconds = rawSeconds && rawSeconds > 0 ? rawSeconds : 0;
+    const date = dayjs().subtract(seconds, 'second');
     saveRunningDescription(description);
     sendApiCall(
         {
             method: 'POST',
             path: '/api-public/v2/timeentries/',
             data: {
-                date: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-                duration: null,
+                date: date.format('YYYY-MM-DD HH:mm:ss'),
+                duration: isTrackingStarted ? null : seconds,
                 description: description,
                 assignment: getSelectedAssignment(),
                 external_ids: externalIds
             }
         },
-        function (data) {
-            runningEntry = { uuid: 'irrelevant uuid' };
+        function () {
+            runningEntry = { uuid: isTrackingStarted ? 'irrelevant uuid' : null };
             reloadIcon(closePopup);
         }
     );
-};
+}
+
+function addClickHandlers(selector, handler) {
+    document.querySelectorAll(selector).forEach(
+        (element) => element.onclick = () => handler(element)
+    );
+}
 
 window.addEventListener('DOMContentLoaded', showPopup);
 
