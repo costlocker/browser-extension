@@ -280,6 +280,7 @@ function loadDataFromCurrentPage() {
 }
 
 function loadTimeentryFromPage(data, tab) {
+    logRuntimeError(tab.url + ' is not fully supported, page title is used');
     if (!data) {
         data = anyPageProvider(tab);
     }
@@ -300,6 +301,14 @@ function loadTimeentryFromPage(data, tab) {
             document.getElementById('description-start').value = description;
         }
     );
+}
+
+function logRuntimeError(message) {
+    if (chrome.runtime.lastError) {
+        // ignore runtime error (https://stackoverflow.com/a/28432087)
+        console.log(message);
+        console.log('> Error:', chrome.runtime.lastError.message);
+    }
 }
 
 document.querySelectorAll('.open-costlocker').forEach(
