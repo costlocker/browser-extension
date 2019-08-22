@@ -29,9 +29,15 @@ function showPage(selectedPage) {
         page.className = page.id == selectedPage ? '' : 'hide';
     }
     if (selectedPage == 'page-tracking-start') {
-        // TODO: enable permanently enabled save in settings
-        reloadTrackingMode();
-        setPopupHeight();
+        chrome.storage.local.get(
+            {
+                isSaveEnabled: false,
+            },
+            function (options) {
+                reloadTrackingMode(options.isSaveEnabled);
+                setPopupHeight();
+            }
+        );
     }
 }
 
@@ -87,7 +93,6 @@ addClickHandlers(
 );
 
 function reloadTrackingMode(isSaveEnabled) {
-    console.log('reload', isSaveEnabled);
     const css = document.getElementById('page-tracking-start').classList;
     css.remove('save--enabled', 'save--disabled');
     css.add(isSaveEnabled ? 'save--enabled' : 'save--disabled');
