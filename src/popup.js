@@ -127,9 +127,17 @@ function saveTracking(isTrackingStarted) {
         },
         function () {
             runningEntry = { uuid: isTrackingStarted ? 'irrelevant uuid' : null };
-            reloadIcon(closePopup);
+            reloadIcon(isTrackingStarted ? closePopup : resetTracking);
         }
     );
+
+    function resetTracking() {
+        document.getElementById('duration-save').clearDuration();
+        loadDataFromCurrentPage();
+        // assignment is not resetted, update choices to at least v4 if somebody needs it
+        // https://github.com/jshjohnson/Choices/issues/562, https://github.com/jshjohnson/Choices/issues/606
+        // https://github.com/jshjohnson/Choices/commit/bfb6571#diff-9e2a8f22c90c4a480becdea2ea8c54e1R141
+    }
 }
 
 window.addEventListener('DOMContentLoaded', showPopup);
@@ -220,7 +228,7 @@ function loadAssignments(availableAssignments) {
         })
     });
 
-    const choices = new Choices(projectsSelect, {
+    new Choices(projectsSelect, {
         choices: options,
         maxItemCount: 1,
         searchResultLimit: 5,

@@ -13,11 +13,14 @@ function clDurationInput(input, secondsToText) {
             input.setAttribute('title', input.value);
             input.value = secondsToText(seconds);
         } else {
-            input.setAttribute('data-seconds', 0);
-            input.setAttribute('title', `Unknown format: ${input.value}`);
-            input.value = "";
+            input.clearDuration(`Unknown format: ${input.value}`);
         }
     };
+    input.clearDuration = (title) => {
+        input.setAttribute('data-seconds', 0);
+        input.setAttribute('title', title || '');
+        input.value = "";
+    }
 }
 
 function clDurationParser() {
