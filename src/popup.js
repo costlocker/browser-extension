@@ -83,6 +83,7 @@ onClick(
             },
             function () {
                 runningEntry = null;
+                clearInterval(runningEntryInterval);
                 reloadIcon();
                 showPage('page-tracking-start');
             }
@@ -186,6 +187,9 @@ function saveRunningDescription(value) {
 }
 
 function showRunningTime() {
+    if (!isRunning()) {
+        return;
+    }
     const date = getRunningDate();
     const runningSeconds = countRunningSeconds(date);
     document.getElementById('duration-time').textContent = convertSecondsToTime(runningSeconds);
