@@ -119,6 +119,23 @@ h1 {
     background: #000;
 }
 
+.fa {
+    display: inline-block;
+    line-height: 1em;
+    font-size: 1em;
+}
+.fa-play::before {
+    content: '▶';
+    color: white;
+    vertical-align: middle;
+}
+.fa-stop {
+    width: 1.5ex;
+    height: 1.5ex;
+    background: white;
+    vertical-align: baseline;
+}
+
 .hide {
     display: none !important;
 }
