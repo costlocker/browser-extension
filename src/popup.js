@@ -385,7 +385,7 @@ onClick('.open-costlocker', () => {
     closePopup();
 });
 onClick('#close', closePopup);
-onClick('#options', chrome.runtime.openOptionsPage);
+onClick('#options', () => chrome.runtime.openOptionsPage());
 
 function onClick(selector, handler) {
     document.querySelectorAll(selector).forEach(
