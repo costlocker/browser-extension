@@ -1,13 +1,13 @@
 
 chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
     if (msg.from === 'popup' && msg.subject === 'CostlockerTimeEntry') {
-        const keys = parseKey();
+        const issue = getIssue();
         callback({
-            id: keys.id,
+            id: issue,
             description: getCardTitle(),
             external_ids: {
                 url: window.location.href,
-                project: keys.project,
+                issue: issue,
             }
         });
     }
@@ -17,18 +17,11 @@ chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
         return element ? element.textContent : document.title;
     }
 
-    function parseKey() {
+    function getIssue() {
         const element = document.querySelector('.issue-header [data-issue-key]');
         if (!element) {
-            return {
-                key: null,
-                project: null,
-            };
+            return null;
         }
-        const key = element.getAttribute('data-issue-key');
-        return {
-            id: key,
-            project: key.split('-')[0],
-        };
+        return element.getAttribute('data-issue-key');
     }
 });
