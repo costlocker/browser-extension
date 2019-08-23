@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
             external_ids: {
                 url: page.url,
                 cardShortId: page.shortId,
-                boardShortLink: getBoardShortLink(),
+                boardProject: getBoardProject(), // shortBoardId would be better, but it's hard to detect it
             }
         });
     }
@@ -27,8 +27,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, callback) {
         return element ? element.textContent : document.title;
     }
     
-    function getBoardShortLink() {
-        const element = document.querySelector('.js-recent-boards a.js-open-board');
-        return element ? element.getAttribute('href').split('/')[2] : null;
+    function getBoardProject() {
+        const project = document.querySelector('.board-header-btn-text');
+        return project ? project.textContent.trim() : null;
     }
 });
