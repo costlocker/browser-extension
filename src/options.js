@@ -8,7 +8,7 @@ function restore() {
             idBeforeDescription: true,
             idPrefix: '',
             idSuffix: '',
-            isSaveEnabled: false,
+            isSaveEnabled: true,
         },
         function (items) {
             document.getElementById('id_before_description').checked = items.idBeforeDescription;

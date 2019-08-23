@@ -12,12 +12,13 @@ body {
     font-size: 14px;
     overflow: hidden;
 }
-.tracking-dropdown-hide {
-    height: 290px;
-}
-.tracking-dropdown-show {
-    height: 500px;
-}
+.tracking-dropdown-show { height: 500px; }
+.tracking-dropdown-hide.save--disabled { height: 320px; }
+.tracking-dropdown-hide.save--enabled { height: 370px; }
+.save--enabled [data-mode="save"] { display: block; }
+.save--enabled [data-mode="start"] { display: none; }
+.save--disabled [data-mode="save"] { display: none; }
+.save--disabled [data-mode="start"] { display: block; }
 
 section {
     margin: 14px;
@@ -128,11 +129,6 @@ h1 {
 .timesheet-task-search__client, .timesheet-task-search__activity-task {
     color: gray;
 }
-
-.save--enabled [data-mode="save"] { display: block; }
-.save--enabled [data-mode="start"] { display: none; }
-.save--disabled [data-mode="save"] { display: none; }
-.save--disabled [data-mode="start"] { display: block; }
 
 .row > div { display: inline-block; }
 .col-sm-6 { width: 50%; }

@@ -31,7 +31,7 @@ function showPage(selectedPage) {
     if (selectedPage == 'page-tracking-start') {
         chrome.storage.local.get(
             {
-                isSaveEnabled: false,
+                isSaveEnabled: true,
             },
             function (options) {
                 reloadTrackingMode(options.isSaveEnabled);
@@ -93,9 +93,10 @@ addClickHandlers(
 );
 
 function reloadTrackingMode(isSaveEnabled) {
-    const css = document.getElementById('page-tracking-start').classList;
-    css.remove('save--enabled', 'save--disabled');
-    css.add(isSaveEnabled ? 'save--enabled' : 'save--disabled');
+    togglePageClass(isSaveEnabled, {
+        true: 'save--enabled',
+        false: 'save--disabled',
+    });
 };
 
 addClickHandlers('[data-tracking-start]', () => saveTracking(true));
@@ -255,7 +256,17 @@ function loadAssignments(availableAssignments) {
 }
 
 function setPopupHeight(isDropdownVisible) {
-    document.body.parentElement.className = isDropdownVisible ? 'tracking-dropdown-show' : 'tracking-dropdown-hide';
+    togglePageClass(isDropdownVisible, {
+        true: 'tracking-dropdown-show',
+        false: 'tracking-dropdown-hide',
+    });
+}
+
+function togglePageClass(value, options) {
+    const boolean = value ? true : false;
+    const css = document.body.parentElement.classList;
+    css.remove(options[!boolean]);
+    css.add(options[boolean]);
 }
 
 function renderAssignmentOption(unsafeNames, container) {
