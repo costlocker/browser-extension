@@ -66,28 +66,31 @@ function reloadIcon(callback) {
     );
 }
 
-document.getElementById('tracking-stop').onclick = function () {
-    sendApiCall(
-        {
-            method: 'POST',
-            path: '/api-public/v2/timeentries/',
-            data: {
-                uuid: runningEntry.uuid,
-                date: runningEntry.date,
-                description: document.getElementById('description-running').value,
-                duration: countRunningSeconds(getRunningDate()),
-                assignment: runningEntry.assignment
+onClick(
+    '#tracking-stop',
+    () => {
+        sendApiCall(
+            {
+                method: 'POST',
+                path: '/api-public/v2/timeentries/',
+                data: {
+                    uuid: runningEntry.uuid,
+                    date: runningEntry.date,
+                    description: document.getElementById('description-running').value,
+                    duration: countRunningSeconds(getRunningDate()),
+                    assignment: runningEntry.assignment
+                }
+            },
+            function () {
+                runningEntry = null;
+                reloadIcon();
+                showPage('page-tracking-start');
             }
-        },
-        function (data) {
-            runningEntry = null;
-            reloadIcon();
-            showPage('page-tracking-start');
-        }
-    );
-};
+        );
+    }
+);
 
-addClickHandlers(
+onClick(
     '[data-mode-toggle]',
     (element) => reloadTrackingMode(element.getAttribute('data-mode') == 'start')
 );
@@ -99,8 +102,8 @@ function reloadTrackingMode(isSaveEnabled) {
     });
 };
 
-addClickHandlers('[data-tracking-start]', () => saveTracking(true));
-addClickHandlers('[data-tracking-save]', () => saveTracking(false));
+onClick('[data-tracking-start]', () => saveTracking(true));
+onClick('[data-tracking-save]', () => saveTracking(false));
 clDurationInput(document.getElementById('duration-save'), convertSecondsToTime);
 
 function saveTracking(isTrackingStarted) {
@@ -125,12 +128,6 @@ function saveTracking(isTrackingStarted) {
             runningEntry = { uuid: isTrackingStarted ? 'irrelevant uuid' : null };
             reloadIcon(closePopup);
         }
-    );
-}
-
-function addClickHandlers(selector, handler) {
-    document.querySelectorAll(selector).forEach(
-        (element) => element.onclick = () => handler(element)
     );
 }
 
@@ -330,7 +327,7 @@ function loadDataFromCurrentPage() {
 }
 
 function loadTimeentryFromPage(data, tab) {
-    logRuntimeError(tab.url + ' is not fully supported, page title is used');
+    logRuntimeError(`${tab.url} is not fully supported, page title is used`);
     if (!data) {
         data = anyPageProvider(tab);
     }
@@ -357,19 +354,19 @@ function logRuntimeError(message) {
     if (chrome.runtime.lastError) {
         // ignore runtime error (https://stackoverflow.com/a/28432087)
         console.log(message);
-        console.log('> Error:', chrome.runtime.lastError.message);
+        console.log(`> Error [${chrome.runtime.lastError.message}]`);
     }
 }
 
-document.querySelectorAll('.open-costlocker').forEach(
-    link => link.addEventListener('click', function() {
-        chrome.tabs.create({url: 'https://new.costlocker.com/'});
-        closePopup();
-    }
-));
-document.querySelector('#close').addEventListener('click', function() {
+onClick('.open-costlocker', () => {
+    chrome.tabs.create({url: 'https://new.costlocker.com/'});
     closePopup();
 });
-document.querySelector('#options').addEventListener('click', function() {
-    chrome.runtime.openOptionsPage();
-});
+onClick('#close', closePopup);
+onClick('#options', chrome.runtime.openOptionsPage);
+
+function onClick(selector, handler) {
+    document.querySelectorAll(selector).forEach(
+        (element) => element.addEventListener('click', () => handler(element))
+    );
+}
