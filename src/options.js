@@ -28,7 +28,12 @@ function save() {
             isSaveEnabled: document.getElementById('is_save_enabled').checked,
         },
         function () {
-            window.close();
+            if (isFirefox()) {
+                // options is not modal in Firefox
+                alert('Saved');
+            } else {
+                window.close();
+            }
         }
     );
 }

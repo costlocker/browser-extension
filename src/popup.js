@@ -18,10 +18,6 @@ function sendApiCall(settings, callback) {
     );
 }
 
-function isFirefox() {
-    return typeof browser !== "undefined";
-}
-
 function showPage(selectedPage) {
     const pages = document.getElementsByTagName('section');
     for(let i = 0; i < pages.length; i++) {

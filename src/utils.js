@@ -1,4 +1,8 @@
 
+function isFirefox() {
+    return typeof browser !== "undefined";
+}
+
 function escapeObject(names) {
     const escaped = {};
     for (var key in names) {
