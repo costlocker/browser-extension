@@ -1,7 +1,7 @@
 {
   "name": "Costlocker Tracking Button",
   "description": "Track time from any web tool (Trello, JIRA, Google Calendar etc.)",
-  "version": "2018.7.27",
+  "version": "2019.8.23",
   "manifest_version": 2,
   "browser_action": {
     "default_popup": "src/popup.html",

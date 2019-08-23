@@ -17,6 +17,11 @@ Costlocker Tracking Button enables tracking time from any web tool
 
 ## Changelog
 
+#### 2019.8.23
+
+* Add save button _(can be disabled in Settings)_
+* Refine icons, buttons
+
 #### 2018.7.27
 
 * Fix searched fields for assignment
