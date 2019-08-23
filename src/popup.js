@@ -141,7 +141,10 @@ function buildExternalIds(ids) {
     return {
         external_ids: {
             ...ids,
-            browser: isFirefox() ? 'firefox' : 'chrome',
+            browser: {
+                app: isFirefox() ? 'firefox' : 'chrome',
+                os: window.navigator.platform,
+            }
         }
     };
 }
