@@ -82,17 +82,29 @@ h1 {
     width: 100%;
     border: 0;
 }
+.btn:hover, .btn:focus {
+    cursor: pointer;
+}
 .btn-success {
     background: #4db07a;
     color: white;
+}
+.btn-success:hover, .btn-success:focus {
+    background: #459e6e;
 }
 .btn-warning {
     background: orange;
     color: white;
 }
+.btn-warning:hover, .btn-warning:focus {
+    background: #e49625;
+}
 .btn-primary {
     background: #119ee0;
     color: white;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background: #0f8dc8;
 }
 .btn-link {
     border-color: transparent;
@@ -102,6 +114,9 @@ h1 {
     height: 0.9em;
     font-size: 0.8em;
     color: #999;
+}
+.btn-link:hover, .btn-link:focus {
+    background: #000;
 }
 
 .hide {
