@@ -78,7 +78,8 @@ onClick(
                     date: runningEntry.date,
                     description: document.getElementById('description-running').value,
                     duration: countRunningSeconds(getRunningDate()),
-                    assignment: runningEntry.assignment
+                    assignment: runningEntry.assignment,
+                    ...buildExternalIds({}),
                 }
             },
             function () {
@@ -122,7 +123,7 @@ function saveTracking(isTrackingStarted) {
                 duration: isTrackingStarted ? null : seconds,
                 description: description,
                 assignment: getSelectedAssignment(),
-                external_ids: externalIds
+                ...buildExternalIds(externalIds),
             }
         },
         function () {
@@ -138,6 +139,15 @@ function saveTracking(isTrackingStarted) {
         // https://github.com/jshjohnson/Choices/issues/562, https://github.com/jshjohnson/Choices/issues/606
         // https://github.com/jshjohnson/Choices/commit/bfb6571#diff-9e2a8f22c90c4a480becdea2ea8c54e1R141
     }
+}
+
+function buildExternalIds(ids) {
+    return {
+        external_ids: {
+            ...ids,
+            browser: isFirefox() ? 'firefox' : 'chrome',
+        }
+    };
 }
 
 window.addEventListener('DOMContentLoaded', showPopup);
