@@ -116,7 +116,7 @@ h1 {
     color: #999;
 }
 .btn-link:hover, .btn-link:focus {
-    background: #000;
+    color: #000;
 }
 
 .fa {
